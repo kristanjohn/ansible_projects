@@ -22,6 +22,6 @@
       apt: pkg=nginx state=installed update_cache=true
       become: true
     - name: Copy index.html file
-      template: src=index.html.j2 dest=/var/www/html/index.html
+      template: src=./var/index.html.j2 dest=/var/www/html/index.html
       become: true
 
