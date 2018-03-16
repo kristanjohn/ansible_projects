@@ -1,0 +1,27 @@
+## Set instances as webservers with a static website
+## Prerequiste: Provision webserver
+# Ver 1.1           Kristan Edwards
+#
+# nginx default may be
+# /usr/share/nginx/html/index.html
+# /var/www/html/index.html
+
+- hosts: webservers
+  remote_user: ubuntu
+  vars:
+    - WelcomeMsg: "Welcome to Kristan's website"
+  
+  gather_facts: False
+  pre_tasks:
+    - name: Install python for Ansible (for Ubantu)
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      become: true
+
+  tasks:
+    - name: Setup Nginx
+      apt: pkg=nginx state=installed update_cache=true
+      become: true
+    - name: Copy index.html file
+      template: src=index.html.j2 dest=/var/www/html/index.html
+      become: true
+
